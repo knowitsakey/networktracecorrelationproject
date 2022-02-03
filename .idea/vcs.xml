@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyboi" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyboi/ansible-role-tor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyboi/chutney/chutney" vcs="Git" />
@@ -17,6 +18,7 @@
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutney/tor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutneyolde" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/chutney" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/primedchutney" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/rotoxy" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/rotoxy/obfs4" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/tor" vcs="Git" />

@@ -3,8 +3,18 @@
 
 # Apply common configuration to all hosts
 - hosts: localhost
+  connection: local
   become: no
   roles:
 #  - monerole
 #  - ansible-role-onion
-  - outerrole
+  - tortestio
+#  - outerrole #permissions issue when copying folder over.
+
+- hosts: server
+  roles:
+  - serverlisten
+  
+- hosts: client
+  roles:
+  - tortestio

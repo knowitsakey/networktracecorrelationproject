@@ -1,0 +1,14 @@
+---
+# tasks file for serverlisten
+#- name: go to dir
+#  ansible.builtin.command: "cd /home/vagrant/chutney/"
+- name: start chutney first time # won't start tor instances
+  ansible.builtin.command: "./chutney start networks/hs-v3"
+  args:
+    chdir: /home/vagrant/chutney/
+- name: start tor
+  ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/009h/torrc &"
+- name: start ncat
+  ansible.builtin.shell: "ncat -l 9999 < test &"
+- name: start ncat
+  ansible.builtin.shell: "cat /home/vagrant/chutney/net/nodes/009h/hidden_service/hostname"

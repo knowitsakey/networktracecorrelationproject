@@ -1,0 +1,5 @@
+---
+- name: spin up vagrant
+  ansible.builtin.shell: "whoami"
+- name: listen with nc
+  ansible.builtin.shell: "whoami"

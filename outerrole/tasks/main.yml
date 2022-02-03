@@ -1,5 +1,13 @@
 ---
 # tasks file for outerrole
+
+#  - name: git clone chutney
+#    ansible.builtin.git:
+#      repo: https://github.com/torproject/chutney.git
+#      dest: /home/vagrant/chutney
+#      clone: yes
+#      update: yes
+
   - name: Delete chutney in shared folder
     file:
       state: absent
@@ -11,24 +19,12 @@
       dest: /home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/
       mode: preserve
 
-  - name: Replace line in hscommon for listeningport num in shared folder
-    lineinfile:
-      path: "/home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/torrc_templates/hs-common.i"
-      search_string: 'HiddenServicePort'
-      line: "{{'HiddenServicePort ' + hsport + ' 127.0.0.1:' + hsport}}"
+#  - name: Replace line in hscommon for listeningport num in shared folder
+#    lineinfile:
+#      path: "/home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/torrc_templates/hs-common.i"
+#      search_string: 'HiddenServicePort'
+#      line: "{{'HiddenServicePort ' + hsport + ' 127.0.0.1:' + hsport}}"
 
-  - name: set chutneylistenaddress
-    ansible.builtin.shell: "{{'export CHUTNEY_LISTEN_ADDRESS=' + serverip}}"
-    register: chutneyladdr
-
-  - debug: var=chutneyladdr
-
-  - name: configure chutney in shared folder
-    ansible.builtin.shell: "./chutney configure networks/hs-v3"
-    environment:
-      CHUTNEY_LISTEN_ADDRESS: "{{ serverip }}"
-    args:
-      chdir: /home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/
 
   - name: spin up vagrant
     ansible.builtin.shell: "vagrant up"
