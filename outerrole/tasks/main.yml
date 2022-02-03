@@ -1,0 +1,48 @@
+---
+# tasks file for outerrole
+  - name: Delete chutney in shared folder
+    file:
+      state: absent
+      path: "/home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/net/"
+
+  - name: copy all chutneyfiles into shared folder
+    copy:
+      src: /home/g/naanbread/chutneygitrepo/ # note the '/' <-- !!!
+      dest: /home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/
+      mode: preserve
+
+  - name: Replace line in hscommon for listeningport num in shared folder
+    lineinfile:
+      path: "/home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/torrc_templates/hs-common.i"
+      search_string: 'HiddenServicePort'
+      line: "{{'HiddenServicePort ' + hsport + ' 127.0.0.1:' + hsport}}"
+
+  - name: set chutneylistenaddress
+    ansible.builtin.shell: "{{'export CHUTNEY_LISTEN_ADDRESS=' + serverip}}"
+    register: chutneyladdr
+
+  - debug: var=chutneyladdr
+
+  - name: configure chutney in shared folder
+    ansible.builtin.shell: "./chutney configure networks/hs-v3"
+    environment:
+      CHUTNEY_LISTEN_ADDRESS: "{{ serverip }}"
+    args:
+      chdir: /home/g/naanbread/chutneyforvagrant/sharedfolder/chutney/
+
+  - name: spin up vagrant
+    ansible.builtin.shell: "vagrant up"
+    args:
+      chdir: /home/g/naanbread/chutneyforvagrant/
+
+  - name: spin up server
+    ansible.builtin.shell: "vagrant provision onionservice"
+    args:
+      chdir: /home/g/naanbread/chutneyforvagrant/
+
+  - name: spin up client
+    ansible.builtin.shell: "vagrant provision onionclient"
+    args:
+      chdir: /home/g/naanbread/chutneyforvagrant/
+
+

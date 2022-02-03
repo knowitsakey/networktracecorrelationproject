@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/chutneyboi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/ansible-role-tor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/chutney/chutney" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/chutney/rotoxy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/chutney/rotoxy/obfs4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/chutney/tor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyboi/chutneyolde" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneycurrent" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/ansible-role-tor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutney/chutney" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutney/rotoxy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutney/rotoxy/obfs4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutney/tor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/chutneyolde" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/chutney" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/rotoxy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/rotoxy/obfs4" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneyforvagrant/sharedfolder/tor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/chutneygitrepo" vcs="Git" />
+  </component>
+</project>

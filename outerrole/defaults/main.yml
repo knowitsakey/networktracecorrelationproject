@@ -1,0 +1,8 @@
+---
+# defaults file for chutneyclientboi
+numservers: 1
+numclients: 1
+subnet: 192.168.56.1/24
+serverip: 192.168.56.3
+clientip: 192.168.56.4
+hsport: '9999'
