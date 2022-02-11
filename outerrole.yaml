@@ -1,6 +1,12 @@
 ---
 ## This playbook deploys the whole application stack in this site.
 
+#hostfile: "/home/vagrant/chutney/net/nodes/009h/hidden_service/hostname"
+#myonionurl: "a"
+
+#- name: setvars
+#  set_fact: hostfile="/home/vagrant/chutney/net/nodes/009h/hidden_service/hostname"
+  #other_fact="{{ local_var }}"
 # Apply common configuration to all hosts
 - hosts: localhost
   connection: local
@@ -12,9 +18,101 @@
 #  - outerrole #permissions issue when copying folder over.
 
 - hosts: server
-  roles:
-  - serverlisten
-  
+  become: yes
+  become_user: vagrant
+  tasks:
+  - name: get the username running the deploy
+    ansible.builtin.shell: "whoami"
+    register: username_on_the_host
+
+  - name: pwd
+    ansible.builtin.shell: "pwd"
+    register: username_on_the_host
+
+  - name: make sure tor stopped
+    ansible.builtin.shell: "killall -r tor"
+    ignore_errors: yes
+
+  - name: make sure ncat stopped
+    ansible.builtin.shell: "killall -r ncat"
+    ignore_errors: yes
+
+  - name: make sure chutney stopped # won't start tor instances
+    ansible.builtin.shell: "./chutney stop networks/hs-v3 &"
+    args:
+      chdir: /home/vagrant/chutney/
+
+  - name: start chutney first time # won't start tor instances
+    ansible.builtin.shell: "./chutney start networks/hs-v3 &"
+    args:
+      chdir: /home/vagrant/chutney/
+
+  - name: start tor
+    ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/009h/torrc"
+
+  - name: cat onionurl
+    ansible.builtin.shell: cat {{hostfile}}
+    register: wholeoutput
+
+  - name: snag stdout from object
+    set_fact:
+      fileoutput: "{{wholeoutput.stdout}}"
+
+  - name: add onion variable to dummy host
+    add_host:
+      name: "varholder"
+      fileoutput:  "{{fileoutput}}"
+
+  - name: print onion address
+    ansible.builtin.debug:
+      msg: "{{fileoutput}}"
+
+  - name: start ncat
+    ansible.builtin.shell: "ncat -l --send-only 127.0.0.1 9999 < test"
+    async: 45
+    poll: 0
+
+#  - name: extract password
+#    ansible.builtin.debug:
+#      msg: "{{ mounts['content'] | b64decode }}"
+#    register: fileoutput.stdout
+
+#  - name: extract password
+#    slurp:
+#      src: {{hostfile}}
+#    register: onionurl
+
+#  - name: decode onionurl
+#    set_fact:
+#      myonionurl: "{{onionurl['content'] | b64decode}}"
+#    register: myonionurl
+#  - name: register onionurl
+#    set_fact:
+#      myonionurl: fileoutput.stdout
+#    register: myonionurl
+
 - hosts: client
-  roles:
-  - tortestio
+  become: yes
+  become_user: vagrant
+  vars:
+    fileoutput: "{{ hostvars['varholder']['fileoutput'] }}"
+  tasks:
+  - name: make sure tor stopped
+    ansible.builtin.shell: "killall -r tor"
+    ignore_errors: yes
+
+  - name: make sure ncat stopped
+    ansible.builtin.shell: "killall -r ncat"
+    ignore_errors: yes
+
+  - name: print onion address again
+    ansible.builtin.debug:
+      msg: "{{fileoutput}}"
+
+  - name: start tor
+    ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/008c/torrc"
+    delay: 3
+
+  - name: start ncat
+    ansible.builtin.shell: "ncat --proxy 127.0.0.1:9008 --proxy-type socks5 {{fileoutput}} 9999 > test"
+    register: testoutput

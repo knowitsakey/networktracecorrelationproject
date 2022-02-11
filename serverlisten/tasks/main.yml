@@ -1,14 +1,57 @@
 ---
+
 # tasks file for serverlisten
-#- name: go to dir
+#- name: go to dir tor -f /home/vagrant/chutney/net/nodes.1643962426/001a/torrc --quiet
+# ./chutney start networks/hs-v3
 #  ansible.builtin.command: "cd /home/vagrant/chutney/"
-- name: start chutney first time # won't start tor instances
-  ansible.builtin.command: "./chutney start networks/hs-v3"
-  args:
-    chdir: /home/vagrant/chutney/
-- name: start tor
-  ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/009h/torrc &"
-- name: start ncat
-  ansible.builtin.shell: "ncat -l 9999 < test &"
-- name: start ncat
-  ansible.builtin.shell: "cat /home/vagrant/chutney/net/nodes/009h/hidden_service/hostname"
+  # become: yes
+  # become_user: vagrant
+#  - name: start tor
+#    ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/009h/torrc"
+#    become: yes
+#    become_user: vagrant
+#
+#  - name: start ncat
+#    ansible.builtin.shell: "ncat -l 9999 < test &"
+#    become: yes
+#    become_user: vagrant
+#  - name: display multiple file contents
+#    debug: var=item
+#    with_file:
+#      - "/home/vagrant/chutney/net/nodes/009h/hidden_service/hostname"
+#    become: yes
+#    become_user: vagrant
+
+  - name: get the username running the deploy
+    ansible.builtin.shell: "whoami"
+    register: username_on_the_host
+    become: yes
+    become_user: vagrant
+  - name: pwd
+    ansible.builtin.shell: "pwd"
+    register: username_on_the_host
+
+  - name: start chutney first time # won't start tor instances
+    ansible.builtin.shell: "./chutney start networks/hs-v3 &"
+    args:
+      chdir: /home/vagrant/chutney/
+    become: yes
+    become_user: vagrant
+
+  - name: extract password
+    slurp:
+      src: /home/vagrant/chutney/net/nodes/009h/hidden_service/hostname
+    register: onionurl
+    become: yes
+    become_user: vagrant
+
+  - name: decode onionurl
+    set_fact:
+      myonionurl: "{{onionurl.content | b64decode}}"
+    become: yes
+    become_user: vagrant
+
+  - name: start ncat
+    ansible.builtin.shell: "ncat -l 127.0.0.1 9999 < test"
+    become: yes
+    become_user: vagrant

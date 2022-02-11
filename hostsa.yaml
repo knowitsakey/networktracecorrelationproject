@@ -1,0 +1,21 @@
+ all:
+    children:
+      local:
+        hosts:
+          local1:
+            ansible_host: 127.0.0.1
+            ansible_user: g
+      server:
+        hosts:
+          server1:
+            ansible_host: 127.0.0.1
+            ansible_port: 2200
+            ansible_user: vagrant
+            ansible_ssh_private_key_file: '/home/g/naanbread/chutneyforvagrant/.vagrant/machines/onionservice/virtualbox/private_key'
+      client:
+        hosts:
+          client1:
+            ansible_host: 127.0.0.1
+            ansible_port: 2201
+            ansible_user: vagrant
+            ansible_ssh_private_key_file: '/home/g/naanbread/chutneyforvagrant/.vagrant/machines/onionclient/virtualbox/private_key'

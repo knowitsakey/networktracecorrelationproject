@@ -1,2 +1,11 @@
 ---
 # tasks file for clientconnect
+  - name: start ncat
+    ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/008c/torrc"
+    become: yes
+    become_user: vagrant
+  - name: start ncat
+    ansible.builtin.shell: "ncat --proxy 127.0.0.1:9008 --proxy-type socks5 kohxth3si5q6c6souka7blxoqd6sjnomhwatadje2gzettfow2sbkdad.onion 9999"
+    become: yes
+    become_user: vagrant
+
