@@ -29,6 +29,15 @@
     ansible.builtin.shell: "pwd"
     register: username_on_the_host
 
+  - name: Touch test
+    ansible.builtin.file:
+      path: ~/test
+      state: touch
+      mode: '1777'
+  - name: write to file
+    ansible.builtin.lineinfile:
+      path: ~/test
+      line: testtesttest
   - name: make sure tor stopped
     ansible.builtin.shell: "killall -r tor"
     ignore_errors: yes
@@ -49,7 +58,9 @@
 
   - name: start tor
     ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/009h/torrc"
-
+#  - name: wait a bit
+#    ansible.builtin.wait_for:
+#      timeout: 7
   - name: cat onionurl
     ansible.builtin.shell: cat {{hostfile}}
     register: wholeoutput
@@ -69,7 +80,7 @@
 
   - name: start ncat
     ansible.builtin.shell: "ncat -l --send-only 127.0.0.1 9999 < test"
-    async: 45
+    async: 75
     poll: 0
 
 #  - name: extract password
@@ -111,8 +122,44 @@
 
   - name: start tor
     ansible.builtin.shell: "tor -f /home/vagrant/chutney/net/nodes/008c/torrc"
-    delay: 3
+
+  - name: delete test
+    ansible.builtin.file:
+      path: ~/test
+      state: absent
+
+  - name: Touch test
+    ansible.builtin.file:
+      path: ~/test
+      state: touch
+      mode: '1777'
+#  - name: wait a bit
+#    ansible.builtin.wait_for:
+#      timeout: 7
 
   - name: start ncat
-    ansible.builtin.shell: "ncat --proxy 127.0.0.1:9008 --proxy-type socks5 {{fileoutput}} 9999 > test"
+    ansible.builtin.shell: "ncat --recv-only --proxy 127.0.0.1:9008 --proxy-type socks5 {{fileoutput}} 9999 > test &"
     register: testoutput
+
+
+  - name: Check if file got transfered
+    ansible.builtin.lineinfile:
+      path: ~/test
+      state: absent
+      line: testtesttest
+    check_mode: yes
+    changed_when: false
+    register: conf
+
+  - debug:
+      msg: "We goo-wop"
+    when: conf.found
+
+  - debug:
+      msg: "Sumn went wrong"
+    when: not conf.found
+
+  - name: print onion address another gain
+    ansible.builtin.debug:
+      msg: "your onion address is {{fileoutput}}"
+
