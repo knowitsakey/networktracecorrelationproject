@@ -1,22 +1,19 @@
 
-This project sets up a tor-in-a-box lab towards developing netflow correlation capabilities to trace malicious traffic in tor. The project automatically sets up series of virtualbox virtual machines on Ubuntu linux.
+This project sets up a tor-in-a-box lab towards developing traffic correlation trace capabilities on the tor network. The project automatically sets up a mini version of the tor network in a series of virtualbox virtual machines on Ubuntu linux.
 For more details, reach out.
 
 A more detailed description of the project follows:
 
 Project 2:
 
-The aim of this project is to understand how traffic correlation trace collection works from a practical perspective. Companies like ciphertrace provide this functionality https://ciphertrace.com/ to try and track cryptocurrency on behalf of governments. Various cryptocurrency corporations are beginning to try and mitigate the trace collection "problem" faced by cryptocurrency users, by releasing tools to allow people to make anonymous payments. However, until tools like this are widespread, traffic correlation trace anaylsis remains viable.
+The aim of this project is to understand how traffic correlation trace collection works from a practical, hands on perspective.
 
 A background on traffic correlation trace collection:
 
-Some sets of defenses against malicious cyber activity rely on netflow correlation patterns. Netflow is a log format for IP traffic, including incoming and outgoing ip addresses, timestamps and packet sizes. A national cybersecurity apparatus operating with the ability to interecept traffic, such as that maintained by the National Security Agency sets up a series of high bandwidth routers at the points where internet traffic exits and enters the country and uses correlations in netflow to try and identify malicious patterns. This process could hopefully be effective in blocking foreign-originating cyberattacks, and it could benefit strongly from automation.
-For example, if a person in a foreign country is using a VPN in order to make it appear that their internet traffic is originating from the united states in order to do a cyberattack, the timestamps in the netflow logs for the incoming and outgoing traffic might help identify the original ip address source of this traffic.
+Some sets of defenses against malicious cyber activity rely on trace analysis by traffic correlation. Companies like ciphertrace set up middleboxes in the internet backbone in order to try and trace obfuscated cryptocurrency payments. Government agencies also collect their own traces on key places in the internet backbone. On an unobfuscated network like TCP/IP, trace correlation can be aided by log formats such as netflow, which collects timestamps, ip addresses, and packet sizes. On an obfuscated network, like tor, traces may still be collected, especially when an adversary maintains the capability to listen at the entry and exit nodes.
+https://arxiv.org/pdf/2009.13018.pdf
 
-The process of tracing malicious user traces becomes harder when addressing traffic routed through Tor. Tor works by making traffic appear uniform, padding the lengths of transmissions, and adding random time delays. With that said, traffic can still be identified and correlated. Especially with a large amount of data and computing power, it is potentially feasible to find some needles in the haystack. For example, if an adversary is able to listen at the point when traffic enters tor, such as that coming from a vpn endpoint and the traffic leaving the tor exit nodes, it possible to get a trace based on a method like an end-to-end confirmation attack. https://security.stackexchange.com/questions/147402/how-do-traffic-correlation-attacks-against-tor-users-work#:~:text=This%20is%20called%20an%20end,in%20order%20to%20deanonymize%20users.
-
-
-In order to develop an understanding of traffic correlation trace collection, we are going to attempt to create a program to evade trace collection. Our software program will mitigate an adversary able to perform an end to end confirmation attack on the tor network. Then we will design a method to gather traces again.
+In order to develop an understanding of end to end traffic correlation trace collection, we are going to attempt to create a program to use tor to connect to the clearweb while evading trace collection. First we will create a self-contained version of the tor network, and enable trace collection on our entry and exit nodes in the box. Then we will design a program Our software program will mitigate an adversary who has a position listening at entry and exit nodes. Then we will design a method to gather traces on the obfuscated traffic.
 
 The project must have the following components:
 
@@ -27,7 +24,8 @@ The project must have the following components:
 The project was accomplished by doing the following:
 
 1. Modify the darkssh project to create several socks5 proxies to hidden services encrypted via ssh. https://github.com/knowitsakey/darkssh
-2. Leverage the chutney framework to create an ansible role to spin up a tor network in a box https://github.com/knowitsakey/naanbread
+2. Leverage the chutney framework to create an ansible role to spin up a tor network in a box for testing https://github.com/knowitsakey/naanbread
+3. Create a rotating tor proxy that proxies client request through a hidden service in our network in a box https://github.com/knowitsakey/rotoxy
 
 Key learning points were:
 
@@ -35,7 +33,6 @@ Key learning points were:
 2. Defining an accurate mental model of how netflow correlation traces might be gathered.
 3. Solidify understanding of the client-server networking paradigm.
 4. Developing a thorough understanding of the topology of the tor anonymity network.
-
 
 Note, based on publishing date, a reader notes that this code was written prior to the release of GPT. Python scripts and ansible roles still had to be written and debugged by hand during this time period.
 
