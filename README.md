@@ -33,7 +33,8 @@ Key learning points were:
 
 1. Building an understanding of how TCP works on a socket level.
 2. Defining an accurate mental model of how netflow correlation traces might be gathered.
-3. Developing a thorough understanding of the topology of the tor anonymity network.
+3. Solidify understanding of the client-server networking paradigm.
+4. Developing a thorough understanding of the topology of the tor anonymity network.
 
 
 Note, based on publishing date, a reader notes that this code was written prior to the release of GPT. Python scripts and ansible roles still had to be written and debugged by hand during this time period.
