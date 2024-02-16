@@ -1,9 +1,10 @@
-Project 2: 
+
 This project sets up a tor-in-a-box lab towards developing netflow correlation capabilities to trace malicious traffic in tor. The project automatically sets up series of virtualbox virtual machines on Ubuntu linux.
 For more details, reach out.
 
 A more detailed description of the project follows:
 
+Project 2:
 
 The aim of this project is to understand how traffic correlation trace collection works from a practical perspective. Companies like ciphertrace provide this functionality https://ciphertrace.com/ to try and track cryptocurrency on behalf of governments. Various cryptocurrency corporations are beginning to try and mitigate the trace collection "problem" faced by cryptocurrency users, by releasing tools to allow people to make anonymous payments. However, until tools like this are widespread, traffic correlation trace anaylsis remains viable.
 
